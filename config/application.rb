@@ -44,5 +44,9 @@ module KisiApiChallenge
 
     # Configures the custom queue adapter.
     config.active_job.queue_adapter = :pubsub
+
+    def topic_name
+      ENV["TOPIC_NAME"] || "topic-1"
+    end
   end
 end
