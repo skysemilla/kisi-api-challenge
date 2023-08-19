@@ -10,10 +10,10 @@ This repository contains:
 To start run `bundle install`.
 
 To run the worker use the command:
-`TOPIC_NAME=<put-your-topic-name-here> GOOGLE_APPLICATION_CREDENTIALS=credentials.json rails worker:run`
+`GOOGLE_APPLICATION_CREDENTIALS=credentials.json rails worker:run`
 
 To run the rake task to enqueue 5 sample jobs:
-`TOPIC_NAME=<put-your-topic-name-here> GOOGLE_APPLICATION_CREDENTIALS=credentials.json rails worker:enqueue_jobs`
+`GOOGLE_APPLICATION_CREDENTIALS=credentials.json rails worker:enqueue_jobs`
 
 Make sure that the `credentials.json` file contains valid google pubsub credentials that will allow you access to your project.
 
