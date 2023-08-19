@@ -5,14 +5,12 @@ class PubsubJob < ApplicationJob
   retry_on(StandardError, wait: 5.second, attempts: 2)
 
   def perform(*args)
-    ActiveSupport::Notifications.instrument("perform.pubsub_job") do
-      # puts("\n [PubsubJob][perform-start] #{args}")
-      sleeping_time = rand(5)
-      puts("\n [PubsubJob][sleeping_time]: #{sleeping_time} => #{(sleeping_time % 2).zero?}")
-      raise(StandardError) if (sleeping_time % 2).zero?
+    # puts("\n [PubsubJob][perform-start] #{args}")
+    sleeping_time = rand(5)
+    puts("\n [PubsubJob][sleeping_time]: #{sleeping_time} => #{(sleeping_time % 2).zero?}")
+    raise(StandardError) if (sleeping_time % 2).zero?
 
-      sleep(sleeping_time)
-      # puts("\n [PubsubJob][perform-end] #{args}")
-    end
+    sleep(sleeping_time)
+    # puts("\n [PubsubJob][perform-end] #{args}")
   end
 end

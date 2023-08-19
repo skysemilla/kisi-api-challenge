@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-ActiveSupport::Notifications.subscribe("perform.pubsub_job") do |name, started, finished, _unique_id, _data|
+ActiveSupport::Notifications.subscribe("perform.active_job") do |name, started, finished, _unique_id, _data|
   logger(name, started, finished)
 end
 
-ActiveSupport::Notifications.subscribe("enqueue.pubsub_adapter") do |name, started, finished, _unique_id, _data|
+ActiveSupport::Notifications.subscribe("enqueue.active_job") do |name, started, finished, _unique_id, _data|
   logger(name, started, finished)
 end
 
-ActiveSupport::Notifications.subscribe("enqueue_at.pubsub_adapter") do |name, started, finished, _unique_id, _data|
+ActiveSupport::Notifications.subscribe("enqueue_at.active_job") do |name, started, finished, _unique_id, _data|
   logger(name, started, finished)
 end
 

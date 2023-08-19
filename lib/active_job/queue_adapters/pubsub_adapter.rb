@@ -7,10 +7,8 @@ module ActiveJob
       #
       # @param [ActiveJob::Base] job The job to be performed.
       def enqueue(job)
-        ActiveSupport::Notifications.instrument("enqueue.pubsub_adapter") do
-          # puts("\n [PubsubAdapter][enqueue]: #{job.inspect}")
-          publish_job(job)
-        end
+        # puts("\n [PubsubAdapter][enqueue]: #{job.inspect}")
+        publish_job(job)
       end
 
       # Enqueue a job to be performed at a certain time.
@@ -18,10 +16,8 @@ module ActiveJob
       # @param [ActiveJob::Base] job The job to be performed.
       # @param [Float] timestamp The time to perform the job.
       def enqueue_at(job, timestamp)
-        ActiveSupport::Notifications.instrument("enqueue_at.pubsub_adapter") do
-          # puts("\n [PubsubAdapter][enqueue_at]: #{job.inspect} timestamp: #{timestamp}")
-          publish_job(job, timestamp)
-        end
+        # puts("\n [PubsubAdapter][enqueue_at]: #{job.inspect} timestamp: #{timestamp}")
+        publish_job(job, timestamp)
       end
 
       private
