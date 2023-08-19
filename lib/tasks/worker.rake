@@ -2,7 +2,7 @@
 
 require("concurrent")
 
-MAX_DELAY = 1.minutes
+MAX_DELAY = 5.minutes
 TOPIC_NAME = "topic-kisi"
 
 namespace(:worker) do
@@ -55,11 +55,12 @@ namespace(:worker) do
         puts("\n [LISTEN] Processing right away....")
         process_message(message, pubsub)
       else
-        delay = message.attributes['timestamp'].to_i - Time.now.to_i
+        delay = [message.attributes['timestamp'].to_i - Time.now.to_i, MAX_DELAY.to_i].min
         puts("\n [LISTEN] Will be processed after #{delay}s")
         message.modify_ack_deadline!(delay)
       end
     end
+
     # Propagate expection from child threads to the main thread as soon as it is
     # raised. Exceptions happened in the callback thread are collected in the
     # callback thread pool and do not propagate to the main thread
