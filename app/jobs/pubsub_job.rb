@@ -2,18 +2,17 @@
 
 class PubsubJob < ApplicationJob
   # self.queue_adapter = :pubsub
-  queue_as(:default)
-  retry_on(StandardError, wait: 5.minute, attempts: 2)
+  retry_on(StandardError, wait: 5.second, attempts: 2)
 
   def perform(*args)
-    puts("\n [PubsubJob][perform-start] #{args}")
+    ActiveSupport::Notifications.instrument("perform.pubsub_job") do
+      # puts("\n [PubsubJob][perform-start] #{args}")
+      sleeping_time = rand(5)
+      puts("\n [PubsubJob][sleeping_time]: #{sleeping_time} => #{(sleeping_time % 2).zero?}")
+      raise(StandardError) if (sleeping_time % 2).zero?
 
-    sleeping_time = rand(5)
-    puts("\n [PubsubJob][sleeping_time]: #{sleeping_time} => #{(sleeping_time % 2).zero?}")
-    raise(StandardError) if (sleeping_time % 2).zero?
-
-    sleep(sleeping_time)
-
-    puts("\n [PubsubJob][perform-end] #{args}")
+      sleep(sleeping_time)
+      # puts("\n [PubsubJob][perform-end] #{args}")
+    end
   end
 end

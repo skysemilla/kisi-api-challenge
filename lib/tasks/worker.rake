@@ -3,6 +3,7 @@
 require("concurrent")
 
 MAX_DELAY = 1.minutes
+TOPIC_NAME = "topic-kisi"
 
 namespace(:worker) do
   # if timestamp already passed or same as Time.now we will process the message
@@ -31,18 +32,12 @@ namespace(:worker) do
   def enqueue_failed_jobs(message, pubsub)
     puts("\n [WORKER][enqueue_failed_jobs] Message: #{message.data}")
 
-    failed_topic = "#{topic_name}-morgue-queue"
+    failed_topic = "#{TOPIC_NAME}-morgue-queue"
     pubsub.topic(failed_topic).publish(JSON.dump(message.data)) # publish failed messages to morgue topic
     pubsub.subscribe(failed_topic) # create a subscription
     puts("\n [WORKER][enqueue_failed_jobs] Done publishing: #{message.data}")
   rescue StandardError => e
     puts("\n [ERROR][WORKER][enqueue_failed_jobs]: Error publishing to morgue queue : #{e.message}")
-  end
-
-  # use the environment variable set for the topic name
-  # to make it configurable
-  def topic_name
-    @topic_name ||= Rails.application.topic_name
   end
 
   desc('Run the worker')
@@ -52,7 +47,7 @@ namespace(:worker) do
     puts("Worker starting...")
 
     pubsub = Pubsub.new
-    subscription = pubsub.subscribe(topic_name)
+    subscription = pubsub.subscribe(TOPIC_NAME)
 
     subscriber = subscription.listen do |message|
       puts("\n Received message: #{message.data}")
