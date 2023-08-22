@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class PubsubJob < ApplicationJob
-  # self.queue_adapter = :pubsub
-  retry_on(StandardError, wait: 5.second, attempts: 2)
+  retry_on(StandardError, wait: 5.minute, attempts: 2)
 
   def perform(*args)
     # puts("\n [PubsubJob][perform-start] #{args}")
